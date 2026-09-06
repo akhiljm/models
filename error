@@ -1,0 +1,28 @@
+ValueError                                Traceback (most recent call last)
+Cell In[31], line 85
+     81     esrgan_model = esrgan,
+     82     clf_model    = clf_model,
+     83     pacs_cfg     = None)  # Set to {"host":"192.168.1.50","port":11112,"aet":"PACS"} for live
+     84 
+---> 85 pipeline.run_usb_stream(device_id=0, max_frames=5, save_dir="/tmp/pipeline_out")
+     86 print("\n📊 Run Summary:")
+     87 import pandas as pd
+     88 print(pd.DataFrame(pipeline.history).to_markdown(index=False))
+
+Cell In[31], line 71
+     67         frame_n = 0
+     68         while cap.isOpened() and frame_n < max_frames:
+     69             ret, frame = cap.read()
+     70             if not ret: break
+---> 71             res, overlay = self.run_frame(frame, save_dir)
+     72             cv2.imshow("Fetal AI Pipeline", cv2.cvtColor(overlay, cv2.COLOR_RGB2BGR))
+     73             print(f"Frame {frame_n}: {res['label']} | conf={res['confidence']:.2f}")
+     74             frame_n += 1
+
+Cell In[31], line 39
+     35                    int(ys.max()*h/heatmap.shape[0]))
+     36 
+...
+   1082     )
+   1084 if tsyntax.is_private and not tsyntax.is_transfer_syntax:
+   1085     if None in fallback_encoding:
